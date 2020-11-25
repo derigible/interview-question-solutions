@@ -10,8 +10,29 @@ import (
 	"strconv"
 )
 
+// To solve, here are the steps:
+// 1. Start at left position and set the flip position
+// 2. move to next position
+//   - if same move to next
+//   - if not same, increment flips and change flip position
+//     - move to next position
+// 3. Continue 1 and 2 until end of line
+// 4. Check 0 position
+//   - if - then increment flip and return
+//   - if not then return
 func findOptimalFlips(pile string) int {
-	return 0
+	var flipPosition = pile[0]
+	var flips = 0
+	for i := 1; i < len(pile); i++ {
+		if flipPosition != pile[i] {
+			flips++
+			flipPosition = pile[i]
+		}
+	}
+	if flipPosition == '-' {
+		flips++
+	}
+	return flips
 }
 
 func prepareStack(caseNumber int, pile string) int {
@@ -59,6 +80,7 @@ func main() {
 	stacksPath := flag.String("path", "./setup", "A path to the setup file.")
 	runTests := flag.Bool("runTests", false, "Run the tests for this project.")
 	flag.Parse()
+
 	specs := readPiles(stacksPath)
 
 	if *runTests {
